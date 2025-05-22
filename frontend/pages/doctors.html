@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Find Doctors - Healthcare Scheduling System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <!-- Header Section -->
+  <header class="header">
+    <div class="container">
+      <nav class="navbar">
+        <a href="../index.html" class="logo">MedSchedule</a>
+        <ul class="nav-links" id="nav-links">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="doctors.html" class="active">Doctors</a></li>
+          <li><a href="appointments.html">Appointments</a></li>
+          <li id="admin-link" style="display: none;"><a href="admin/dashboard.html">Admin</a></li>
+          <li id="auth-links">
+            <a href="login.html" id="login-link">Login</a>
+            <a href="register.html" id="register-link">Register</a>
+            <a href="account.html" id="account-link" style="display: none;">My Account</a>
+            <a href="#" id="logout-link" style="display: none;">Logout</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Search Section -->
+  <section class="search-section" style="padding: 40px 0; background-color: #f5f5f5;">
+    <div class="container">
+      <h2 class="text-center">Find a Doctor</h2>
+      <div class="card" style="margin-top: 20px;">
+        <div class="card-body">
+          <form id="doctor-search-form">
+            <div style="display: flex; flex-wrap: wrap; gap: 15px;">
+              <div class="form-group" style="flex: 2; min-width: 200px;">
+                <label for="specialization" class="form-label">Specialization</label>
+                <select id="specialization" name="specialization" class="form-select">
+                  <option value="">All Specializations</option>
+                  <option value="Cardiology">Cardiology</option>
+                  <option value="Dermatology">Dermatology</option>
+                  <option value="Endocrinology">Endocrinology</option>
+                  <option value="Gastroenterology">Gastroenterology</option>
+                  <option value="Neurology">Neurology</option>
+                  <option value="Obstetrics">Obstetrics</option>
+                  <option value="Oncology">Oncology</option>
+                  <option value="Ophthalmology">Ophthalmology</option>
+                  <option value="Orthopedics">Orthopedics</option>
+                  <option value="Pediatrics">Pediatrics</option>
+                  <option value="Psychiatry">Psychiatry</option>
+                  <option value="Urology">Urology</option>
+                </select>
+              </div>
+              
+              <div class="form-group" style="flex: 2; min-width: 200px;">
+                <label for="name" class="form-label">Doctor Name</label>
+                <input type="text" id="name" name="name" class="form-input" placeholder="Search by name...">
+              </div>
+              
+              <div class="form-group" style="flex: 1; min-width: 150px; display: flex; align-items: flex-end;">
+                <button type="submit" class="btn" style="width: 100%;">Search</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Doctors Listing Section -->
+  <section class="doctors-section" style="padding: 40px 0;">
+    <div class="container">
+      <div id="doctors-container">
+        <!-- Doctors will be loaded here -->
+        <div id="loading-indicator" style="text-align: center; padding: 40px;">
+          <div style="border: 5px solid #f3f3f3; border-top: 5px solid var(--primary-color); border-radius: 50%; width: 50px; height: 50px; margin: 0 auto; animation: spin 2s linear infinite;"></div>
+          <p style="margin-top: 20px;">Loading doctors...</p>
+        </div>
+        
+        <div id="no-results" style="text-align: center; padding: 40px; display: none;">
+          <h3>No doctors found</h3>
+          <p>Please try different search criteria or check back later.</p>
+        </div>
+      </div>
+      
+      <!-- Pagination -->
+      <div id="pagination-container" class="text-center mt-3" style="display: none;">
+        <!-- Pagination controls will be added here -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Doctor Profile Modal -->
+  <div id="doctor-profile-modal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4); padding-top: 60px;">
+    <div style="background-color: #fefefe; margin: 5% auto; padding: 20px; border: 1px solid #888; width: 80%; max-width: 700px; border-radius: var(--border-radius); position: relative;">
+      <span id="close-modal" style="position: absolute; right: 20px; top: 10px; color: #aaa; font-size: 28px; font-weight: bold; cursor: pointer;">&times;</span>
+      
+      <div id="doctor-profile-content">
+        <!-- Doctor profile details will be loaded here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer Section -->
+  <footer style="background-color: #333; color: white; padding: 40px 0; margin-top: 60px;">
+    <div class="container">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px;">
+        <div>
+          <h3>MedSchedule</h3>
+          <p>Efficient healthcare scheduling for better patient care and provider management.</p>
+        </div>
+        
+        <div>
+          <h3>Quick Links</h3>
+          <ul style="list-style: none; padding: 0;">
+            <li><a href="../index.html" style="color: white; text-decoration: none;">Home</a></li>
+            <li><a href="doctors.html" style="color: white; text-decoration: none;">Doctors</a></li>
+            <li><a href="appointments.html" style="color: white; text-decoration: none;">Appointments</a></li>
+            <li><a href="login.html" style="color: white; text-decoration: none;">Login</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3>Contact Us</h3>
+          <p>Email: support@medschedule.com</p>
+          <p>Phone: 1-800-MED-SCHED</p>
+          <p>Address: 123 Healthcare Ave, Medical District</p>
+        </div>
+      </div>
+      
+      <div style="margin-top: 40px; text-align: center; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+        <p>&copy; 2023 Healthcare Scheduling System. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Alert Container -->
+  <div id="alert-container" style="position: fixed; top: 20px; right: 20px; z-index: 1000;"></div>
+
+  <!-- Scripts -->
+  <script src="../js/api.js"></script>
+  <script src="../js/utils.js"></script>
+  <script src="../js/layout.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Load doctors on page load
+      loadDoctors();
+      
+      // Search form submission
+      const searchForm = document.getElementById('doctor-search-form');
+      searchForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        loadDoctors(1); // Reset to page 1 when searching
+      });
+      
+      // Close modal when clicking the X
+      document.getElementById('close-modal').addEventListener('click', () => {
+        document.getElementById('doctor-profile-modal').style.display = 'none';
+      });
+      
+      // Close modal when clicking outside of it
+      window.addEventListener('click', (e) => {
+        const modal = document.getElementById('doctor-profile-modal');
+        if (e.target === modal) {
+          modal.style.display = 'none';
+        }
+      });
+    });
+    
+    // Load doctors from API
+    async function loadDoctors(page = 1) {
+      const doctorsContainer = document.getElementById('doctors-container');
+      const loadingIndicator = document.getElementById('loading-indicator');
+      const noResults = document.getElementById('no-results');
+      const paginationContainer = document.getElementById('pagination-container');
+      
+      // Show loading
+      loadingIndicator.style.display = 'block';
+      noResults.style.display = 'none';
+      doctorsContainer.innerHTML = '';
+      doctorsContainer.appendChild(loadingIndicator);
+      paginationContainer.style.display = 'none';
+      
+      // Get search parameters
+      const specialization = document.getElementById('specialization').value;
+      const name = document.getElementById('name').value;
+      
+      // Build query string
+      let query = `?page=${page}&limit=10`;
+      if (specialization) query += `&specialization=${encodeURIComponent(specialization)}`;
+      if (name) query += `&name=${encodeURIComponent(name)}`;
+      
+      try {
+        // Call API
+        const response = await api.doctors.getAllDoctors(query);
+        
+        // Hide loading
+        loadingIndicator.style.display = 'none';
+        
+        if (response.success && response.data.length > 0) {
+          // Create doctor cards
+          const doctorsGrid = document.createElement('div');
+          doctorsGrid.style.display = 'grid';
+          doctorsGrid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(300px, 1fr))';
+          doctorsGrid.style.gap = '20px';
+          
+          response.data.forEach(doctor => {
+            const doctorCard = createDoctorCard(doctor);
+            doctorsGrid.appendChild(doctorCard);
+          });
+          
+          doctorsContainer.innerHTML = '';
+          doctorsContainer.appendChild(doctorsGrid);
+          
+          // Pagination
+          if (response.pagination) {
+            paginationContainer.style.display = 'block';
+            utils.generatePagination(
+              response.pagination.currentPage,
+              response.pagination.totalPages,
+              paginationContainer
+            );
+            
+            // Handle page change event
+            paginationContainer.addEventListener('pageChange', (e) => {
+              loadDoctors(e.detail.page);
+            });
+          }
+        } else {
+          // No results
+          noResults.style.display = 'block';
+          doctorsContainer.innerHTML = '';
+          doctorsContainer.appendChild(noResults);
+        }
+      } catch (error) {
+        // Error handling
+        loadingIndicator.style.display = 'none';
+        utils.showAlert('Error loading doctors: ' + error, 'error');
+        
+        // Show error message in container
+        doctorsContainer.innerHTML = `
+          <div style="text-align: center; padding: 40px;">
+            <h3>Error loading doctors</h3>
+            <p>Please try again later.</p>
+          </div>
+        `;
+      }
+    }
+    
+    // Create a doctor card
+    function createDoctorCard(doctor) {
+      const card = document.createElement('div');
+      card.className = 'card';
+      
+      // Doctor image
+      const imageUrl = doctor.profileImage || '../img/default-doctor.png';
+      
+      card.innerHTML = `
+        <div style="padding: 20px;">
+          <div style="display: flex; align-items: center;">
+            <div style="width: 80px; height: 80px; border-radius: 50%; overflow: hidden; margin-right: 15px;">
+              <img src="${imageUrl}" alt="Dr. ${doctor.user.name}" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <div>
+              <h3 style="margin: 0 0 5px 0;">Dr. ${doctor.user.name}</h3>
+              <p style="margin: 0; color: var(--primary-color);">${doctor.specialization}</p>
+            </div>
+          </div>
+          
+          <div style="margin-top: 15px;">
+            <p><strong>Experience:</strong> ${doctor.experience || 0} years</p>
+            <p><strong>Available:</strong> ${doctor.isAvailable ? 'Yes' : 'No'}</p>
+          </div>
+          
+          <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+            <button class="btn view-profile-btn" data-id="${doctor._id}">View Profile</button>
+            <button class="btn book-appointment-btn" data-id="${doctor._id}" ${!doctor.isAvailable ? 'disabled' : ''}>Book Appointment</button>
+          </div>
+        </div>
+      `;
+      
+      // Add event listeners
+      card.querySelector('.view-profile-btn').addEventListener('click', () => {
+        viewDoctorProfile(doctor._id);
+      });
+      
+      card.querySelector('.book-appointment-btn').addEventListener('click', () => {
+        bookAppointment(doctor._id);
+      });
+      
+      return card;
+    }
+    
+    // View doctor profile
+    async function viewDoctorProfile(doctorId) {
+      const modal = document.getElementById('doctor-profile-modal');
+      const modalContent = document.getElementById('doctor-profile-content');
+      
+      // Show loading in modal
+      modalContent.innerHTML = `
+        <div style="text-align: center; padding: 40px;">
+          <div style="border: 5px solid #f3f3f3; border-top: 5px solid var(--primary-color); border-radius: 50%; width: 50px; height: 50px; margin: 0 auto; animation: spin 2s linear infinite;"></div>
+          <p style="margin-top: 20px;">Loading doctor profile...</p>
+        </div>
+      `;
+      
+      modal.style.display = 'block';
+      
+      try {
+        // Fetch doctor details
+        const response = await api.doctors.getDoctorById(doctorId);
+        
+        if (response.success) {
+          const doctor = response.data;
+          const imageUrl = doctor.profileImage || '../img/default-doctor.png';
+          
+          // Format available days
+          let availableDays = '';
+          if (doctor.availability && doctor.availability.length > 0) {
+            availableDays = doctor.availability.map(day => day.dayOfWeek).join(', ');
+          } else {
+            availableDays = 'Not specified';
+          }
+          
+          modalContent.innerHTML = `
+            <div style="display: flex; flex-wrap: wrap;">
+              <div style="flex: 1; min-width: 200px; text-align: center; padding-right: 20px;">
+                <div style="width: 150px; height: 150px; border-radius: 50%; overflow: hidden; margin: 0 auto;">
+                  <img src="${imageUrl}" alt="Dr. ${doctor.name}" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <h2 style="margin: 15px 0 5px 0;">Dr. ${doctor.name}</h2>
+                <p style="color: var(--primary-color); margin: 0 0 15px 0;">${doctor.specialization}</p>
+                <p>${doctor.isAvailable ? '<span style="color: var(--success-color); font-weight: bold;">Available</span>' : '<span style="color: var(--error-color);">Not Available</span>'}</p>
+              </div>
+              
+              <div style="flex: 2; min-width: 300px;">
+                <h3>About</h3>
+                <p>${doctor.bio || 'No biography available.'}</p>
+                
+                <div style="margin-top: 20px;">
+                  <h3>Doctor Information</h3>
+                  <table style="width: 100%;">
+                    <tr>
+                      <td><strong>Experience:</strong></td>
+                      <td>${doctor.experience || 0} years</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Education:</strong></td>
+                      <td>${doctor.education || 'Not specified'}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Available Days:</strong></td>
+                      <td>${availableDays}</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Languages:</strong></td>
+                      <td>${doctor.languages ? doctor.languages.join(', ') : 'Not specified'}</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+            
+            <div style="margin-top: 30px; text-align: center;">
+              <button class="btn book-appointment-btn" data-id="${doctor._id}" ${!doctor.isAvailable ? 'disabled' : ''}>Book Appointment</button>
+            </div>
+          `;
+          
+          // Add event listener to book button
+          modalContent.querySelector('.book-appointment-btn').addEventListener('click', () => {
+            modal.style.display = 'none';
+            bookAppointment(doctorId);
+          });
+          
+        } else {
+          modalContent.innerHTML = `
+            <div style="text-align: center; padding: 40px;">
+              <h3>Error loading doctor profile</h3>
+              <p>Unable to load the doctor's profile. Please try again later.</p>
+            </div>
+          `;
+        }
+      } catch (error) {
+        modalContent.innerHTML = `
+          <div style="text-align: center; padding: 40px;">
+            <h3>Error loading doctor profile</h3>
+            <p>Unable to load the doctor's profile. Please try again later.</p>
+          </div>
+        `;
+      }
+    }
+    
+    // Book appointment with doctor
+    function bookAppointment(doctorId) {
+      // Check if user is logged in
+      if (!utils.isAuthenticated()) {
+        utils.showAlert('Please login to book an appointment', 'warning');
+        setTimeout(() => {
+          window.location.href = 'login.html?redirect=doctors.html';
+        }, 1500);
+        return;
+      }
+      
+      // Redirect to appointment booking page with doctor ID
+      window.location.href = `appointments.html?doctor=${doctorId}`;
+    }
+    
+    // Add animation for loading spinner
+    const style = document.createElement('style');
+    style.innerHTML = `
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+</body>
+</html> 

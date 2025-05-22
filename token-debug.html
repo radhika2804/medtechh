@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JWT Token Debug</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    pre {
+      background-color: #f5f5f5;
+      padding: 10px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+    button {
+      padding: 8px 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+    .error {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>JWT Token Debugger</h1>
+  
+  <button id="decode-token">Decode Token</button>
+  <button id="logout">Logout</button>
+  
+  <h2>Token Header</h2>
+  <pre id="token-header">Click "Decode Token" to view</pre>
+  
+  <h2>Token Payload</h2>
+  <pre id="token-payload">Click "Decode Token" to view</pre>
+  
+  <h2>Raw Token</h2>
+  <pre id="raw-token">Click "Decode Token" to view</pre>
+  
+  <script>
+    document.getElementById('decode-token').addEventListener('click', function() {
+      try {
+        // Get token from localStorage
+        const token = localStorage.getItem('token');
+        
+        if (!token) {
+          document.getElementById('token-header').textContent = 'No token found in localStorage';
+          document.getElementById('token-payload').textContent = 'No token found in localStorage';
+          document.getElementById('raw-token').textContent = 'No token found in localStorage';
+          return;
+        }
+        
+        // Display raw token
+        document.getElementById('raw-token').textContent = token;
+        
+        // Split token into parts
+        const parts = token.split('.');
+        if (parts.length !== 3) {
+          throw new Error('Token is not a valid JWT format');
+        }
+        
+        // Decode header
+        const headerB64 = parts[0];
+        const header = JSON.parse(atob(headerB64));
+        document.getElementById('token-header').textContent = JSON.stringify(header, null, 2);
+        
+        // Decode payload
+        const payloadB64 = parts[1];
+        // Handle base64url format
+        const base64 = payloadB64.replace(/-/g, '+').replace(/_/g, '/');
+        const rawPayload = atob(base64);
+        const payload = JSON.parse(rawPayload);
+        document.getElementById('token-payload').textContent = JSON.stringify(payload, null, 2);
+        
+        if (!payload.role) {
+          const warningDiv = document.createElement('div');
+          warningDiv.className = 'error';
+          warningDiv.textContent = 'WARNING: No role found in token! You need to logout and login again to get a new token.';
+          document.body.insertBefore(warningDiv, document.querySelector('h2'));
+        }
+      } catch (error) {
+        document.getElementById('token-payload').innerHTML = `<span class="error">Error decoding token: ${error.message}</span>`;
+      }
+    });
+    
+    document.getElementById('logout').addEventListener('click', function() {
+      localStorage.removeItem('token');
+      alert('Logged out successfully. Token removed from localStorage.');
+      window.location.href = '/frontend/pages/login.html';
+    });
+  </script>
+</body>
+</html> 

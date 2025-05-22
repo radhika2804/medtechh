@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Healthcare Scheduling System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Header Section -->
+  <header class="header">
+    <div class="container">
+      <nav class="navbar">
+        <a href="index.html" class="logo">MedSchedule</a>
+        <ul class="nav-links" id="nav-links">
+          <li><a href="index.html" class="active">Home</a></li>
+          <li><a href="pages/doctors.html">Doctors</a></li>
+          <li><a href="pages/appointments.html">Appointments</a></li>
+          <li id="admin-link" style="display: none;"><a href="pages/admin/dashboard.html">Admin</a></li>
+          <li id="auth-links">
+            <a href="pages/login.html" id="login-link">Login</a>
+            <a href="pages/register.html" id="register-link">Register</a>
+            <a href="pages/account.html" id="account-link" style="display: none;">My Account</a>
+            <a href="#" id="logout-link" style="display: none;">Logout</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero" style="background-image: url('img/hero-bg.jpg'); background-size: cover; padding: 80px 0; color: white; text-align: center;">
+    <div class="container" style="color: black;">
+      <h1 style="font-size: 2.5rem; margin-bottom: 20px;">Healthcare Scheduling System</h1>
+      <p style="font-size: 1.2rem; margin-bottom: 30px; max-width: 800px; margin-left: auto; margin-right: auto;">
+        Efficient scheduling for patients and healthcare providers. Find the right doctor, book your appointment, and get the care you need.
+      </p>
+      <div>
+        <a href="pages/doctors.html" class="btn" style="margin-right: 10px;">Find a Doctor</a>
+        <a href="pages/appointments.html" class="btn btn-secondary">Book Appointment</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features" style="padding: 60px 0; background-color: #f5f5f5;">
+    <div class="container">
+      <h2 class="text-center" style="margin-bottom: 40px;">Our Features</h2>
+      
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+        <!-- Feature 1 -->
+        <div class="card">
+          <div class="card-body" style="text-align: center;">
+            <h3 class="card-title">Smart Scheduling</h3>
+            <p>Our intelligent scheduling algorithm prioritizes emergency cases and optimizes appointment allocation.</p>
+          </div>
+        </div>
+        
+        <!-- Feature 2 -->
+        <div class="card">
+          <div class="card-body" style="text-align: center;">
+            <h3 class="card-title">Find Specialists</h3>
+            <p>Easily search for doctors by specialization, experience, and availability to find the right care.</p>
+          </div>
+        </div>
+        
+        <!-- Feature 3 -->
+        <div class="card">
+          <div class="card-body" style="text-align: center;">
+            <h3 class="card-title">Medical Records</h3>
+            <p>Secure access to your medical history, prescriptions, and appointment records.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section class="how-it-works" style="padding: 60px 0;">
+    <div class="container">
+      <h2 class="text-center" style="margin-bottom: 40px;">How It Works</h2>
+      
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; text-align: center;">
+        <!-- Step 1 -->
+        <div style="flex: 1; min-width: 250px; padding: 20px;">
+          <div style="background-color: var(--primary-color); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 20px auto;">1</div>
+          <h3>Register</h3>
+          <p>Create an account as a patient to access the scheduling system.</p>
+        </div>
+        
+        <!-- Step 2 -->
+        <div style="flex: 1; min-width: 250px; padding: 20px;">
+          <div style="background-color: var(--primary-color); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 20px auto;">2</div>
+          <h3>Find a Doctor</h3>
+          <p>Search for doctors by specialty, availability, or ratings.</p>
+        </div>
+        
+        <!-- Step 3 -->
+        <div style="flex: 1; min-width: 250px; padding: 20px;">
+          <div style="background-color: var(--primary-color); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 20px auto;">3</div>
+          <h3>Book Appointment</h3>
+          <p>Select a convenient time slot and provide your visit details.</p>
+        </div>
+        
+        <!-- Step 4 -->
+        <div style="flex: 1; min-width: 250px; padding: 20px;">
+          <div style="background-color: var(--primary-color); color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 0 auto 20px auto;">4</div>
+          <h3>Get Care</h3>
+          <p>Visit the doctor at your scheduled time and receive the care you need.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Priority Algorithm Section -->
+  <section class="priority-algorithm" style="padding: 60px 0; background-color: #f5f5f5;">
+    <div class="container">
+      <h2 class="text-center" style="margin-bottom: 20px;">Our Priority-Based Scheduling</h2>
+      <p class="text-center" style="margin-bottom: 40px; max-width: 800px; margin-left: auto; margin-right: auto;">
+        We use an advanced greedy algorithm that prioritizes appointments based on medical urgency, ensuring those who need care most receive it promptly.
+      </p>
+      
+      <div class="card">
+        <div class="card-body">
+          <h3 class="card-title">How Our Priority System Works</h3>
+          
+          <div class="table-container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Priority Level</th>
+                  <th>Description</th>
+                  <th>Examples</th>
+                  <th>Scheduling Weight</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="priority-emergency">
+                  <td><strong>Emergency</strong></td>
+                  <td>Life-threatening conditions requiring immediate attention</td>
+                  <td>Severe chest pain, major trauma, severe bleeding</td>
+                  <td>Highest priority</td>
+                </tr>
+                <tr class="priority-high">
+                  <td><strong>High</strong></td>
+                  <td>Urgent medical issues requiring prompt attention</td>
+                  <td>High fever, minor fractures, severe pain</td>
+                  <td>Second priority</td>
+                </tr>
+                <tr class="priority-normal">
+                  <td><strong>Normal</strong></td>
+                  <td>Standard medical appointments</td>
+                  <td>Follow-ups, minor illness, chronic condition management</td>
+                  <td>Third priority</td>
+                </tr>
+                <tr class="priority-low">
+                  <td><strong>Low</strong></td>
+                  <td>Non-urgent medical needs</td>
+                  <td>General checkups, prescription refills</td>
+                  <td>Lowest priority</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <div style="margin-top: 30px;">
+            <h4>Greedy Scheduling Algorithm</h4>
+            <p>Our system uses a greedy algorithm that:</p>
+            <ul style="list-style-type: disc; margin-left: 20px;">
+              <li>Sorts patients by priority level (Emergency > High > Normal > Low)</li>
+              <li>Within the same priority, considers registration time (first-come-first-served)</li>
+              <li>Matches patients with appropriate doctors based on specialization</li>
+              <li>Optimizes time slot allocation to minimize wait times</li>
+              <li>Automatically reschedules when emergency cases arise</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer Section -->
+  <footer style="background-color: #333; color: white; padding: 40px 0; margin-top: 60px;">
+    <div class="container">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px;">
+        <div>
+          <h3>MedSchedule</h3>
+          <p>Efficient healthcare scheduling for better patient care and provider management.</p>
+        </div>
+        
+        <div>
+          <h3>Quick Links</h3>
+          <ul style="list-style: none; padding: 0;">
+            <li><a href="index.html" style="color: white; text-decoration: none;">Home</a></li>
+            <li><a href="pages/doctors.html" style="color: white; text-decoration: none;">Doctors</a></li>
+            <li><a href="pages/appointments.html" style="color: white; text-decoration: none;">Appointments</a></li>
+            <li><a href="pages/login.html" style="color: white; text-decoration: none;">Login</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3>Contact Us</h3>
+          <p>Email: support@medschedule.com</p>
+          <p>Phone: 1-800-MED-SCHED</p>
+          <p>Address: 123 Healthcare Ave, Medical District</p>
+        </div>
+      </div>
+      
+      <div style="margin-top: 40px; text-align: center; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+        <p>&copy; 2023 Healthcare Scheduling System. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Alert Container -->
+  <div id="alert-container" style="position: fixed; top: 20px; right: 20px; z-index: 1000;"></div>
+
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/layout.js"></script>
+  <script>
+    // Check for returning user
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        // Check if user is logged in
+        if (utils.isAuthenticated()) {
+          const userData = await api.auth.getCurrentUser();
+          if (userData && userData.success) {
+            // The getCurrentUser function now stores role in localStorage
+            
+            // Show welcome message
+            utils.showAlert(`Welcome back, ${userData.data.name}!`, 'success');
+          }
+        }
+      } catch (error) {
+        console.error('Error checking authentication:', error);
+      }
+    });
+  </script>
+</body>
+</html> 

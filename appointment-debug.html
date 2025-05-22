@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Appointment Debug</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    pre {
+      background-color: #f5f5f5;
+      padding: 10px;
+      border-radius: 5px;
+      overflow: auto;
+      max-height: 500px;
+    }
+    button {
+      padding: 10px 15px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+      margin-right: 10px;
+      margin-bottom: 10px;
+    }
+    #error-container {
+      color: red;
+      margin-top: 20px;
+    }
+    .tab {
+      margin-top: 20px;
+      border: 1px solid #ddd;
+      padding: 15px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Appointment Debug Tool</h1>
+  
+  <div>
+    <button id="show-token">Show Auth Token</button>
+    <button id="clear-results">Clear Results</button>
+  </div>
+  
+  <div class="tab">
+    <h2>Upcoming Appointments</h2>
+    <button id="load-upcoming">Load Upcoming Appointments</button>
+    <pre id="upcoming-results">Results will appear here...</pre>
+  </div>
+  
+  <div class="tab">
+    <h2>Past Appointments</h2>
+    <button id="load-past">Load Past Appointments</button>
+    <pre id="past-results">Results will appear here...</pre>
+  </div>
+  
+  <div id="error-container"></div>
+  
+  <script src="frontend/js/api.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const upcomingResults = document.getElementById('upcoming-results');
+      const pastResults = document.getElementById('past-results');
+      const errorContainer = document.getElementById('error-container');
+      
+      // Load upcoming appointments
+      document.getElementById('load-upcoming').addEventListener('click', async function() {
+        try {
+          upcomingResults.textContent = 'Loading upcoming appointments...';
+          errorContainer.textContent = '';
+          
+          // Get today's date
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
+          
+          // Format the date for the API
+          const formattedDate = today.toISOString().split('T')[0];
+          
+          // Query for upcoming appointments
+          const query = `?scheduledDate[gte]=${formattedDate}&status[nin]=cancelled,completed&sort=scheduledDate`;
+          console.log('Upcoming query:', query);
+          
+          const response = await api.appointments.getAllAppointments(query);
+          
+          upcomingResults.textContent = JSON.stringify(response, null, 2);
+          
+          if (!response.success) {
+            errorContainer.textContent = 'API returned success: false - ' + (response.error || 'Unknown error');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          upcomingResults.textContent = 'Error loading appointments';
+          errorContainer.textContent = error.toString();
+        }
+      });
+      
+      // Load past appointments
+      document.getElementById('load-past').addEventListener('click', async function() {
+        try {
+          pastResults.textContent = 'Loading past appointments...';
+          errorContainer.textContent = '';
+          
+          // Get today's date
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
+          
+          // Format the date for the API
+          const formattedDate = today.toISOString().split('T')[0];
+          
+          // Query for past appointments
+          const query = `?$or[0][scheduledDate][lt]=${formattedDate}&$or[1][status][in]=cancelled,completed&sort=-scheduledDate`;
+          console.log('Past query:', query);
+          
+          const response = await api.appointments.getAllAppointments(query);
+          
+          pastResults.textContent = JSON.stringify(response, null, 2);
+          
+          if (!response.success) {
+            errorContainer.textContent = 'API returned success: false - ' + (response.error || 'Unknown error');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          pastResults.textContent = 'Error loading appointments';
+          errorContainer.textContent = error.toString();
+        }
+      });
+      
+      // Show token button
+      document.getElementById('show-token').addEventListener('click', function() {
+        const token = localStorage.getItem('token');
+        upcomingResults.textContent = token ? `Token: ${token}` : 'No token found';
+      });
+      
+      // Clear results button
+      document.getElementById('clear-results').addEventListener('click', function() {
+        upcomingResults.textContent = 'Results cleared';
+        pastResults.textContent = 'Results cleared';
+        errorContainer.textContent = '';
+      });
+    });
+  </script>
+</body>
+</html> 

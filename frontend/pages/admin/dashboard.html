@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Healthcare Scheduling System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <!-- Header Section -->
+  <header class="header">
+    <div class="container">
+      <nav class="navbar">
+        <a href="../../index.html" class="logo">MedSchedule</a>
+        <ul class="nav-links" id="nav-links">
+          <li><a href="../../index.html">Home</a></li>
+          <li><a href="../doctors.html">Doctors</a></li>
+          <li><a href="../appointments.html">Appointments</a></li>
+          <li id="admin-link"><a href="dashboard.html" class="active">Admin</a></li>
+          <li id="auth-links">
+            <a href="../login.html" id="login-link" style="display: none;">Login</a>
+            <a href="../register.html" id="register-link" style="display: none;">Register</a>
+            <a href="../account.html" id="account-link">My Account</a>
+            <a href="#" id="logout-link">Logout</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Admin Dashboard Section -->
+  <section class="dashboard-section" style="padding: 40px 0;">
+    <div class="container">
+      <h1>Admin Dashboard</h1>
+      
+      <!-- Stats Overview -->
+      <div class="dashboard-grid">
+        <div class="stat-card">
+          <div class="stat-icon" style="font-size: 24px; color: var(--primary-color);">👨‍⚕️</div>
+          <div class="stat-number" id="total-doctors">-</div>
+          <div class="stat-label">Doctors</div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon" style="font-size: 24px; color: var(--primary-color);">👨‍👩‍👧‍👦</div>
+          <div class="stat-number" id="total-patients">-</div>
+          <div class="stat-label">Patients</div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon" style="font-size: 24px; color: var(--primary-color);">📅</div>
+          <div class="stat-number" id="total-appointments">-</div>
+          <div class="stat-label">Appointments</div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon" style="font-size: 24px; color: var(--primary-color);">⚡</div>
+          <div class="stat-number" id="emergency-appointments">-</div>
+          <div class="stat-label">Emergency Cases</div>
+        </div>
+      </div>
+      
+      <!-- Admin Tab Navigation -->
+      <div class="tab-container" style="margin-top: 40px;">
+        <div class="tab-buttons">
+          <button class="tab-button active" data-tab="appointments">Appointments</button>
+          <button class="tab-button" data-tab="doctors">Doctors</button>
+          <button class="tab-button" data-tab="patients">Patients</button>
+          <button class="tab-button" data-tab="scheduler">Auto-Scheduler</button>
+        </div>
+        
+        <!-- Appointments Tab -->
+        <div id="appointments-tab" class="tab-content active">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2>Recent Appointments</h2>
+            <div>
+              <button class="btn" id="refresh-appointments">Refresh</button>
+            </div>
+          </div>
+          
+          <div class="table-container">
+            <table class="table" id="appointments-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Time</th>
+                  <th>Patient</th>
+                  <th>Doctor</th>
+                  <th>Reason</th>
+                  <th>Priority</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="appointments-table-body">
+                <tr>
+                  <td colspan="8" class="text-center">Loading appointments...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+        <!-- Doctors Tab -->
+        <div id="doctors-tab" class="tab-content">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2>Manage Doctors</h2>
+            <div>
+              <button class="btn" id="add-doctor-btn">Add Doctor</button>
+              <button class="btn" id="refresh-doctors">Refresh</button>
+            </div>
+          </div>
+          
+          <div class="table-container">
+            <table class="table" id="doctors-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Specialization</th>
+                  <th>Email</th>
+                  <th>Experience</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="doctors-table-body">
+                <tr>
+                  <td colspan="6" class="text-center">Loading doctors...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+        <!-- Patients Tab -->
+        <div id="patients-tab" class="tab-content">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2>Manage Patients</h2>
+            <div>
+              <button class="btn" id="refresh-patients">Refresh</button>
+            </div>
+          </div>
+          
+          <div class="table-container">
+            <table class="table" id="patients-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Gender</th>
+                  <th>Date of Birth</th>
+                  <th>Contact</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="patients-table-body">
+                <tr>
+                  <td colspan="6" class="text-center">Loading patients...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+        <!-- Auto-Scheduler Tab -->
+        <div id="scheduler-tab" class="tab-content">
+          <h2>Auto-Scheduler</h2>
+          
+          <div class="card mb-3">
+            <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+              <h3 class="card-title">Run Priority-Based Scheduler</h3>
+              <a href="scheduler.html" class="btn btn-sm">Advanced Scheduler</a>
+            </div>
+            <div class="card-body">
+              <p>Use the greedy algorithm to automatically schedule appointments based on priority level (emergency > high > normal > low).</p>
+              <form id="scheduler-form">
+                <div class="form-group">
+                  <label for="scheduler-date" class="form-label">Date Range</label>
+                  <div style="display: flex; gap: 10px;">
+                    <input type="date" id="scheduler-start-date" class="form-input" required>
+                    <span style="align-self: center;">to</span>
+                    <input type="date" id="scheduler-end-date" class="form-input" required>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="scheduler-doctors" class="form-label">Doctors</label>
+                  <select id="scheduler-doctors" class="form-select" multiple>
+                    <option value="all" selected>All Available Doctors</option>
+                  </select>
+                </div>
+                
+                <div class="form-group">
+                  <label class="form-label">Priority Levels</label>
+                  <div style="display: flex; flex-wrap: wrap; gap: 15px;">
+                    <label class="form-checkbox">
+                      <input type="checkbox" name="priorities" value="emergency" checked>
+                      <span class="priority-tag priority-emergency" style="margin-left: 5px;">Emergency</span>
+                    </label>
+                    <label class="form-checkbox">
+                      <input type="checkbox" name="priorities" value="high" checked>
+                      <span class="priority-tag priority-high" style="margin-left: 5px;">High</span>
+                    </label>
+                    <label class="form-checkbox">
+                      <input type="checkbox" name="priorities" value="normal" checked>
+                      <span class="priority-tag priority-normal" style="margin-left: 5px;">Normal</span>
+                    </label>
+                    <label class="form-checkbox">
+                      <input type="checkbox" name="priorities" value="low" checked>
+                      <span class="priority-tag priority-low" style="margin-left: 5px;">Low</span>
+                    </label>
+                  </div>
+                </div>
+                
+                <button type="submit" class="btn">Run Scheduler</button>
+              </form>
+            </div>
+          </div>
+          
+          <div id="scheduler-results" style="display: none;">
+            <h3>Scheduling Results</h3>
+            <div id="scheduler-visualization"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer Section -->
+  <footer style="background-color: #333; color: white; padding: 40px 0; margin-top: 60px;">
+    <div class="container">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px;">
+        <div>
+          <h3>MedSchedule</h3>
+          <p>Efficient healthcare scheduling for better patient care and provider management.</p>
+        </div>
+        
+        <div>
+          <h3>Quick Links</h3>
+          <ul style="list-style: none; padding: 0;">
+            <li><a href="../../index.html" style="color: white; text-decoration: none;">Home</a></li>
+            <li><a href="../doctors.html" style="color: white; text-decoration: none;">Doctors</a></li>
+            <li><a href="../appointments.html" style="color: white; text-decoration: none;">Appointments</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3>Contact Us</h3>
+          <p>Email: support@medschedule.com</p>
+          <p>Phone: 1-800-MED-SCHED</p>
+          <p>Address: 123 Healthcare Ave, Medical District</p>
+        </div>
+      </div>
+      
+      <div style="margin-top: 40px; text-align: center; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+        <p>&copy; 2023 Healthcare Scheduling System. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Alert Container -->
+  <div id="alert-container" style="position: fixed; top: 20px; right: 20px; z-index: 1000;"></div>
+
+  <!-- Scripts -->
+  <script src="../../js/api.js"></script>
+  <script src="../../js/utils.js"></script>
+  <script src="../../js/scheduler.js"></script>
+  <script src="../../js/layout.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Debug token information
+      const token = localStorage.getItem('token');
+      console.log('Current token:', token);
+      
+      try {
+        if (token) {
+          const parts = token.split('.');
+          if (parts.length === 3) {
+            const payload = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')));
+            console.log('Token payload:', payload);
+            console.log('Role in token:', payload.role);
+          }
+        }
+      } catch (error) {
+        console.error('Error decoding token:', error);
+      }
+      
+      // Check if user is admin
+      const userRole = utils.getUserRole();
+      console.log('User role from utils:', userRole);
+      
+    
+      if (userRole !== 'admin') {
+        // Redirect non-admin users
+        utils.showAlert('You do not have permission to access this page', 'error');
+        setTimeout(() => {
+          window.location.href = '../../index.html';
+        }, 2000);
+        return;
+      }
+      
+      
+      // Setup tabs
+      setupTabs();
+      
+      // Load dashboard data
+      loadDashboardStats();
+      loadAppointments();
+      
+      // Setup refresh buttons
+      document.getElementById('refresh-appointments').addEventListener('click', loadAppointments);
+      document.getElementById('refresh-doctors').addEventListener('click', loadDoctors);
+      document.getElementById('refresh-patients').addEventListener('click', loadPatients);
+      
+      // Setup scheduler form
+      setupSchedulerForm();
+      
+      // Add doctor button
+      document.getElementById('add-doctor-btn').addEventListener('click', () => {
+        // Redirect to doctor registration page (admin could create accounts)
+        window.location.href = '../register.html?role=doctor&admin=true';
+      });
+      
+      // Setup logout button
+      document.getElementById('logout-link').addEventListener('click', (e) => {
+        e.preventDefault();
+        api.auth.logout();
+        utils.showAlert('You have been logged out successfully', 'success');
+        setTimeout(() => {
+          window.location.href = '../../index.html';
+        }, 1000);
+      });
+    });
+    
+    // Set up tabs
+    function setupTabs() {
+      const tabButtons = document.querySelectorAll('.tab-button');
+      
+      tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const tabId = button.getAttribute('data-tab');
+          
+          // Update button active state
+          tabButtons.forEach(btn => {
+            btn.classList.remove('active');
+          });
+          button.classList.add('active');
+          
+          // Show active tab content
+          document.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.remove('active');
+          });
+          document.getElementById(`${tabId}-tab`).classList.add('active');
+          
+          // Load data for the activated tab if not already loaded
+          if (tabId === 'doctors' && !document.getElementById('doctors-table-body').innerHTML.includes('Dr.')) {
+            loadDoctors();
+          } else if (tabId === 'patients' && !document.getElementById('patients-table-body').innerHTML.includes('patient')) {
+            loadPatients();
+          }
+        });
+      });
+    }
+    
+    // Load dashboard statistics
+    async function loadDashboardStats() {
+      try {
+        // Get counts from API
+        const doctorsResponse = await api.doctors.getAllDoctors('?limit=1');
+        const patientsResponse = await api.patients.getAllPatients('?limit=1');
+        const appointmentsResponse = await api.appointments.getAllAppointments('?limit=1');
+        const emergencyAppointmentsResponse = await api.appointments.getAllAppointments('?priority=emergency&limit=1');
+        
+        // Update stats
+        if (doctorsResponse.success) {
+          document.getElementById('total-doctors').textContent = doctorsResponse.total || 0;
+        }
+        
+        if (patientsResponse.success) {
+          document.getElementById('total-patients').textContent = patientsResponse.total || 0;
+        }
+        
+        if (appointmentsResponse.success) {
+          document.getElementById('total-appointments').textContent = appointmentsResponse.total || 0;
+        }
+        
+        if (emergencyAppointmentsResponse.success) {
+          document.getElementById('emergency-appointments').textContent = emergencyAppointmentsResponse.total || 0;
+        }
+      } catch (error) {
+        utils.showAlert('Error loading dashboard statistics', 'error');
+      }
+    }
+    
+    // Load appointments data
+    async function loadAppointments() {
+      const tableBody = document.getElementById('appointments-table-body');
+      
+      // Show loading
+      tableBody.innerHTML = '<tr><td colspan="8" class="text-center">Loading appointments...</td></tr>';
+      
+      try {
+        // Get recent appointments (limited to 20)
+        const response = await api.appointments.getAllAppointments('?limit=20&sort=-scheduledDate');
+        
+        if (response.success && response.data.length > 0) {
+          tableBody.innerHTML = '';
+          
+          response.data.forEach(appointment => {
+            const row = document.createElement('tr');
+            
+            // Format date and time
+            const formattedDate = utils.formatReadableDate(appointment.scheduledDate);
+            const formattedTime = `${utils.formatTime(appointment.startTime)} - ${utils.formatTime(appointment.endTime)}`;
+            
+            row.innerHTML = `
+              <td>${formattedDate}</td>
+              <td>${formattedTime}</td>
+              <td>${appointment.patientName || 'Unknown'}</td>
+              <td>${appointment.doctorName || 'Unknown'}</td>
+              <td>${appointment.reasonForVisit}</td>
+              <td><span class="priority-tag priority-${appointment.priority}">${utils.priorityToText(appointment.priority)}</span></td>
+              <td><span class="status-badge status-${appointment.status}">${utils.statusToText(appointment.status)}</span></td>
+              <td>
+                <button class="btn btn-sm" onclick="viewAppointment('${appointment._id}')">View</button>
+                <button class="btn btn-sm btn-secondary" onclick="cancelAppointment('${appointment._id}')">Cancel</button>
+              </td>
+            `;
+            
+            tableBody.appendChild(row);
+          });
+        } else {
+          tableBody.innerHTML = '<tr><td colspan="8" class="text-center">No appointments found</td></tr>';
+        }
+      } catch (error) {
+        tableBody.innerHTML = '<tr><td colspan="8" class="text-center">Error loading appointments</td></tr>';
+        utils.showAlert('Error loading appointments: ' + error, 'error');
+      }
+    }
+    
+    // Load doctors data
+    async function loadDoctors() {
+      const tableBody = document.getElementById('doctors-table-body');
+      
+      // Show loading
+      tableBody.innerHTML = '<tr><td colspan="6" class="text-center">Loading doctors...</td></tr>';
+      
+      try {
+        // Get all doctors
+        const response = await api.doctors.getAllDoctors();
+        
+        if (response.success && response.data.length > 0) {
+          tableBody.innerHTML = '';
+          
+          response.data.forEach(doctor => {
+            const row = document.createElement('tr');
+            
+            row.innerHTML = `
+              <td>Dr. ${doctor.name}</td>
+              <td>${doctor.specialization}</td>
+              <td>${doctor.email}</td>
+              <td>${doctor.experience || 0} years</td>
+              <td>${doctor.isAvailable ? '<span class="status-badge status-scheduled">Available</span>' : '<span class="status-badge status-cancelled">Unavailable</span>'}</td>
+              <td>
+                <button class="btn btn-sm" onclick="viewDoctor('${doctor._id}')">View</button>
+                <button class="btn btn-sm" onclick="editDoctor('${doctor._id}')">Edit</button>
+                <button class="btn btn-sm btn-secondary" onclick="toggleDoctorStatus('${doctor._id}', ${doctor.isAvailable})">
+                  ${doctor.isAvailable ? 'Set Unavailable' : 'Set Available'}
+                </button>
+              </td>
+            `;
+            
+            tableBody.appendChild(row);
+          });
+          
+          // Also update scheduler doctors dropdown
+          updateSchedulerDoctors(response.data);
+        } else {
+          tableBody.innerHTML = '<tr><td colspan="6" class="text-center">No doctors found</td></tr>';
+        }
+      } catch (error) {
+        tableBody.innerHTML = '<tr><td colspan="6" class="text-center">Error loading doctors</td></tr>';
+        utils.showAlert('Error loading doctors: ' + error, 'error');
+      }
+    }
+    
+    // Load patients data
+    async function loadPatients() {
+      const tableBody = document.getElementById('patients-table-body');
+      
+      // Show loading
+      tableBody.innerHTML = '<tr><td colspan="6" class="text-center">Loading patients...</td></tr>';
+      
+      try {
+        // Get all patients
+        const response = await api.patients.getAllPatients();
+        
+        if (response.success && response.data.length > 0) {
+          tableBody.innerHTML = '';
+          
+          response.data.forEach(patient => {
+            const row = document.createElement('tr');
+            
+            row.innerHTML = `
+              <td>${patient.name}</td>
+              <td>${patient.email}</td>
+              <td>${patient.gender || 'Not specified'}</td>
+              <td>${utils.formatReadableDate(patient.dateOfBirth) || 'Not specified'}</td>
+              <td>${patient.contactInfo?.phone || 'Not specified'}</td>
+              <td>
+                <button class="btn btn-sm" onclick="viewPatient('${patient._id}')">View</button>
+                <button class="btn btn-sm" onclick="viewMedicalHistory('${patient._id}')">Medical History</button>
+              </td>
+            `;
+            
+            tableBody.appendChild(row);
+          });
+        } else {
+          tableBody.innerHTML = '<tr><td colspan="6" class="text-center">No patients found</td></tr>';
+        }
+      } catch (error) {
+        tableBody.innerHTML = '<tr><td colspan="6" class="text-center">Error loading patients</td></tr>';
+        utils.showAlert('Error loading patients: ' + error, 'error');
+      }
+    }
+    
+    // Set up the scheduler form
+    function setupSchedulerForm() {
+      const form = document.getElementById('scheduler-form');
+      
+      // Set default dates (next 7 days)
+      const today = new Date();
+      const nextWeek = new Date();
+      nextWeek.setDate(today.getDate() + 7);
+      
+      document.getElementById('scheduler-start-date').value = utils.formatDate(today);
+      document.getElementById('scheduler-end-date').value = utils.formatDate(nextWeek);
+      
+      // Form submission
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const startDate = document.getElementById('scheduler-start-date').value;
+        const endDate = document.getElementById('scheduler-end-date').value;
+        const doctorSelect = document.getElementById('scheduler-doctors');
+        
+        // Get selected doctors
+        const selectedDoctors = Array.from(doctorSelect.selectedOptions).map(option => option.value);
+        
+        // Check if "all" is selected
+        const isAllDoctors = selectedDoctors.includes('all');
+        
+        // Get selected priorities
+        const priorityCheckboxes = document.querySelectorAll('input[name="priorities"]:checked');
+        const selectedPriorities = Array.from(priorityCheckboxes).map(checkbox => checkbox.value);
+        
+        if (selectedPriorities.length === 0) {
+          utils.showAlert('Please select at least one priority level', 'error');
+          return;
+        }
+        
+        // Prepare data for auto-scheduler
+        const schedulingData = {
+          dateRange: {
+            startDate,
+            endDate
+          },
+          doctorIds: isAllDoctors ? [] : selectedDoctors,
+          priorities: selectedPriorities
+        };
+        
+        console.log('Scheduling data:', schedulingData);
+        
+        try {
+          // Show loading state
+          const submitButton = form.querySelector('button[type="submit"]');
+          const originalButtonText = submitButton.textContent;
+          submitButton.textContent = 'Running...';
+          submitButton.disabled = true;
+          
+          // Call API to auto-schedule
+          const response = await api.appointments.autoScheduleAppointments(schedulingData);
+          
+          if (response.success) {
+            utils.showAlert('Auto-scheduling completed successfully!', 'success');
+            
+            // Show results
+            document.getElementById('scheduler-results').style.display = 'block';
+            
+            // Visualize results
+            visualizeSchedulingResults(response.data);
+            
+            // Refresh appointments list
+            loadAppointments();
+          } else {
+            utils.showAlert(response.error || 'Failed to run auto-scheduler', 'error');
+          }
+        } catch (error) {
+          utils.showAlert('Error running auto-scheduler: ' + error, 'error');
+        } finally {
+          // Reset button state
+          submitButton.textContent = originalButtonText;
+          submitButton.disabled = false;
+        }
+      });
+    }
+    
+    // Update scheduler doctors dropdown
+    function updateSchedulerDoctors(doctors) {
+      const doctorsSelect = document.getElementById('scheduler-doctors');
+      
+      // Keep the "All" option and remove the rest
+      while (doctorsSelect.options.length > 1) {
+        doctorsSelect.remove(1);
+      }
+      
+      // Add available doctors
+      doctors.forEach(doctor => {
+        if (doctor.isAvailable) {
+          const option = document.createElement('option');
+          option.value = doctor._id;
+          option.textContent = `Dr. ${doctor.name} (${doctor.specialization})`;
+          doctorsSelect.appendChild(option);
+        }
+      });
+    }
+    
+    // Visualize scheduling results
+    function visualizeSchedulingResults(results) {
+      const container = document.getElementById('scheduler-visualization');
+      
+      // Reset scheduler instance
+      window.scheduler.clear();
+      
+      // Add patients
+      if (results.patients) {
+        results.patients.forEach(patient => {
+          window.scheduler.addPatient(patient);
+        });
+      }
+      
+      // Set doctor availability
+      if (results.doctorAvailability) {
+        for (const doctorId in results.doctorAvailability) {
+          window.scheduler.setDoctorAvailability(doctorId, results.doctorAvailability[doctorId]);
+        }
+      }
+      
+      // Copy scheduled appointments
+      if (results.scheduledAppointments) {
+        window.scheduler.scheduledAppointments = results.scheduledAppointments;
+      }
+      
+      // Copy failed schedulings
+      if (results.failedSchedulings) {
+        window.scheduler.failedSchedulings = results.failedSchedulings;
+      }
+      
+      // Visualize the results
+      window.scheduler.visualizeScheduling('scheduler-visualization');
+    }
+    
+    // View appointment details
+    function viewAppointment(appointmentId) {
+      // Redirect to appointment details page
+      window.location.href = `appointment-details.html?id=${appointmentId}`;
+    }
+    
+    // Cancel appointment
+    async function cancelAppointment(appointmentId) {
+      if (!confirm('Are you sure you want to cancel this appointment?')) {
+        return;
+      }
+      
+      try {
+        // Call API to cancel
+        const response = await api.appointments.cancelAppointment(appointmentId);
+        
+        if (response.success) {
+          utils.showAlert('Appointment cancelled successfully', 'success');
+          // Reload appointments
+          loadAppointments();
+        } else {
+          utils.showAlert(response.error || 'Failed to cancel appointment', 'error');
+        }
+      } catch (error) {
+        utils.showAlert('Error cancelling appointment: ' + error, 'error');
+      }
+    }
+    
+    // View doctor details
+    function viewDoctor(doctorId) {
+      // Redirect to doctor details page
+      window.location.href = `doctor-details.html?id=${doctorId}`;
+    }
+    
+    // Edit doctor
+    function editDoctor(doctorId) {
+      // Redirect to doctor edit page
+      window.location.href = `edit-doctor.html?id=${doctorId}`;
+    }
+    
+    // Toggle doctor availability status
+    async function toggleDoctorStatus(doctorId, currentStatus) {
+      try {
+        const newStatus = !currentStatus;
+        
+        // Call API to update doctor
+        const response = await api.doctors.updateDoctor(doctorId, {
+          isAvailable: newStatus
+        });
+        
+        if (response.success) {
+          utils.showAlert(`Doctor is now ${newStatus ? 'available' : 'unavailable'}`, 'success');
+          // Reload doctors
+          loadDoctors();
+        } else {
+          utils.showAlert(response.error || 'Failed to update doctor status', 'error');
+        }
+      } catch (error) {
+        utils.showAlert('Error updating doctor status: ' + error, 'error');
+      }
+    }
+    
+    // View patient details
+    function viewPatient(patientId) {
+      // Redirect to patient details page
+      window.location.href = `patient-details.html?id=${patientId}`;
+    }
+    
+    // View patient medical history
+    function viewMedicalHistory(patientId) {
+      // Redirect to medical history page
+      window.location.href = `medical-history.html?patientId=${patientId}`;
+    }
+  </script>
+</body>
+</html> 

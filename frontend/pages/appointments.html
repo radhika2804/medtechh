@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Appointments - Healthcare Scheduling System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .tab-container {
+      margin: 20px 0;
+    }
+    .tab-buttons {
+      display: flex;
+      border-bottom: 1px solid #ddd;
+    }
+    .tab-button {
+      padding: 10px 20px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text-color);
+    }
+    .tab-button.active {
+      color: var(--primary-color);
+      border-bottom: 2px solid var(--primary-color);
+    }
+    .tab-content {
+      padding: 20px 0;
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header Section -->
+  <header class="header">
+    <div class="container">
+      <nav class="navbar">
+        <a href="../index.html" class="logo">MedSchedule</a>
+        <ul class="nav-links" id="nav-links">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="doctors.html">Doctors</a></li>
+          <li><a href="appointments.html" class="active">Appointments</a></li>
+          <li id="admin-link" style="display: none;"><a href="admin/dashboard.html">Admin</a></li>
+          <li id="auth-links">
+            <a href="login.html" id="login-link">Login</a>
+            <a href="register.html" id="register-link">Register</a>
+            <a href="account.html" id="account-link" style="display: none;">My Account</a>
+            <a href="#" id="logout-link" style="display: none;">Logout</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <section class="appointment-section" style="padding: 40px 0;">
+    <div class="container">
+      <h1 class="text-center">Appointments</h1>
+      
+      <!-- Main Page Loading (shown when page first loads) -->
+      <div id="page-loading" class="text-center" style="padding: 40px 0;">
+        <div class="loading-spinner"></div>
+        <p>Loading appointments data...</p>
+      </div>
+      
+      <!-- Login Prompt (shown if not logged in) -->
+      <div id="login-prompt" style="display: none;">
+        <div class="card">
+          <div class="card-body text-center">
+            <h2>Please Login</h2>
+            <p>You need to be logged in to book or view appointments.</p>
+            <a href="login.html?redirect=appointments.html" class="btn">Login Now</a>
+            <p style="margin-top: 15px;">Don't have an account? <a href="register.html">Register</a></p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Appointments Content (shown if logged in) -->
+      <div id="appointments-content" style="display: none;">
+        <div class="tab-container">
+          <div class="tab-buttons">
+            <button class="tab-button active" data-tab="book">Book Appointment</button>
+            <button class="tab-button" data-tab="upcoming">Upcoming Appointments</button>
+            <button class="tab-button" data-tab="past">Past Appointments</button>
+          </div>
+          
+          <!-- Book Appointment Tab -->
+          <div id="book-tab" class="tab-content active">
+            <h2>Book a New Appointment</h2>
+            
+            <!-- Doctor Selection -->
+            <div class="card mb-3">
+              <div class="card-header">
+                <h3 class="card-title">Select Doctor</h3>
+              </div>
+              <div class="card-body">
+                <div id="doctor-selection">
+                  <div class="form-group">
+                    <label for="doctor-filter" class="form-label">Search by Specialization</label>
+                    <select id="doctor-filter" class="form-select">
+                      <option value="">All Specializations</option>
+                      <option value="Cardiology">Cardiology</option>
+                      <option value="Dermatology">Dermatology</option>
+                      <option value="Endocrinology">Endocrinology</option>
+                      <option value="Gastroenterology">Gastroenterology</option>
+                      <option value="Neurology">Neurology</option>
+                      <option value="Obstetrics">Obstetrics</option>
+                      <option value="Oncology">Oncology</option>
+                      <option value="Ophthalmology">Ophthalmology</option>
+                      <option value="Orthopedics">Orthopedics</option>
+                      <option value="Pediatrics">Pediatrics</option>
+                      <option value="Psychiatry">Psychiatry</option>
+                      <option value="Urology">Urology</option>
+                    </select>
+                  </div>
+                  
+                  <div id="doctors-list" style="margin-top: 20px;">
+                    <!-- Doctors will be loaded here -->
+                    <div id="loading-doctors" style="text-align: center;">
+                      <div class="loading-spinner"></div>
+                      <p>Loading doctors...</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Appointment Details Form (initially hidden) -->
+            <div id="appointment-form-container" class="card mb-3" style="display: none;">
+              <div class="card-header">
+                <h3 class="card-title">Appointment Details</h3>
+              </div>
+              <div class="card-body">
+                <form id="appointment-form">
+                  <input type="hidden" id="selected-doctor-id" name="doctorId">
+                  
+                  <div class="form-group">
+                    <label for="appointment-date" class="form-label">Date</label>
+                    <input type="date" id="appointment-date" name="appointmentDate" class="form-input" required>
+                    <div id="appointment-date-error" class="error-message" style="color: var(--error-color); display: none;"></div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="available-slots" class="form-label">Available Time Slots</label>
+                    <div id="available-slots">
+                      <p>Select a date to see available slots</p>
+                    </div>
+                    <div id="time-slot-error" class="error-message" style="color: var(--error-color); display: none;"></div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="reason" class="form-label">Reason for Visit</label>
+                    <textarea id="reason" name="reason" class="form-input" rows="3" required></textarea>
+                    <div id="reason-error" class="error-message" style="color: var(--error-color); display: none;"></div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="priority" class="form-label">Priority</label>
+                    <select id="priority" name="priority" class="form-select" required>
+                      <option value="low">Low (Regular checkup)</option>
+                      <option value="normal" selected>Normal (Minor issue)</option>
+                      <option value="high">High (Urgent care needed)</option>
+                      <option value="emergency">Emergency (Life-threatening)</option>
+                    </select>
+                    <div id="priority-error" class="error-message" style="color: var(--error-color); display: none;"></div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="notes" class="form-label">Additional Notes</label>
+                    <textarea id="notes" name="notes" class="form-input" rows="2"></textarea>
+                  </div>
+                  
+                  <button type="submit" class="btn" style="width: 100%;">Book Appointment</button>
+                </form>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Upcoming Appointments Tab -->
+          <div id="upcoming-tab" class="tab-content">
+            <h2>Upcoming Appointments</h2>
+            <div id="upcoming-appointments-container">
+              <div id="loading-upcoming" style="text-align: center;">
+                <div class="loading-spinner"></div>
+                <p>Loading your appointments...</p>
+              </div>
+              <div id="no-upcoming" style="text-align: center; display: none;">
+                <h3>No upcoming appointments</h3>
+                <p>You don't have any upcoming appointments scheduled.</p>
+                <button class="btn book-now-btn">Book Now</button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Past Appointments Tab -->
+          <div id="past-tab" class="tab-content">
+            <h2>Past Appointments</h2>
+            <div id="past-appointments-container">
+              <div id="loading-past" style="text-align: center;">
+                <div class="loading-spinner"></div>
+                <p>Loading your past appointments...</p>
+              </div>
+              <div id="no-past" style="text-align: center; display: none;">
+                <h3>No past appointments</h3>
+                <p>You don't have any past appointments in our records.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer Section -->
+  <footer style="background-color: #333; color: white; padding: 40px 0; margin-top: 60px;">
+    <div class="container">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px;">
+        <div>
+          <h3>MedSchedule</h3>
+          <p>Efficient healthcare scheduling for better patient care and provider management.</p>
+        </div>
+        
+        <div>
+          <h3>Quick Links</h3>
+          <ul style="list-style: none; padding: 0;">
+            <li><a href="../index.html" style="color: white; text-decoration: none;">Home</a></li>
+            <li><a href="doctors.html" style="color: white; text-decoration: none;">Doctors</a></li>
+            <li><a href="appointments.html" style="color: white; text-decoration: none;">Appointments</a></li>
+            <li><a href="login.html" style="color: white; text-decoration: none;">Login</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3>Contact Us</h3>
+          <p>Email: support@medschedule.com</p>
+          <p>Phone: 1-800-MED-SCHED</p>
+          <p>Address: 123 Healthcare Ave, Medical District</p>
+        </div>
+      </div>
+      
+      <div style="margin-top: 40px; text-align: center; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+        <p>&copy; 2023 Healthcare Scheduling System. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Alert Container -->
+  <div id="alert-container" style="position: fixed; top: 20px; right: 20px; z-index: 1000;"></div>
+
+    <!-- Scripts -->
+    <script src="../js/api.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/layout.js"></script>
+    <script src="../js/appointments.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', async () => {
+        try {
+          // Check if user is logged in, redirect to login if not
+          if (!utils.isAuthenticated()) {
+            document.getElementById('page-loading').style.display = 'none';
+            utils.showAlert('Please log in to view appointments', 'warning');
+            setTimeout(() => {
+              window.location.href = 'login.html?redirect=appointments.html';
+            }, 1500);
+            return;
+          }
+          
+          // Load user's appointments
+          await loadAppointments();
+          
+          // Modal close buttons
+          setupModalCloseButtons();
+          
+          // Setup booking form
+          setupBookingForm();
+        } catch (error) {
+          console.error('Error initializing appointments page:', error);
+          document.getElementById('page-loading').innerHTML = `
+            <div class="alert alert-danger">
+              <p>Error loading appointments. Please try refreshing the page.</p>
+              <p>Details: ${error.message || 'Unknown error'}</p>
+            </div>
+          `;
+        }
+      });
+    </script>
+</body>
+</html> 

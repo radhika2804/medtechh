@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auto-Scheduler - Healthcare Scheduling System</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Open+Sans:wght@300;400;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .priority-emergency {
+      background-color: rgba(244, 67, 54, 0.1);
+    }
+
+    .priority-high {
+      background-color: rgba(255, 152, 0, 0.1);
+    }
+
+    .priority-normal {
+      background-color: rgba(33, 150, 243, 0.1);
+    }
+
+    .priority-low {
+      background-color: rgba(76, 175, 80, 0.1);
+    }
+
+    .scheduler-container {
+      margin-top: 30px;
+    }
+
+    .scheduler-step {
+      margin-bottom: 20px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: var(--border-radius);
+    }
+
+    .scheduler-step-title {
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+
+    .priority-info {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .priority-card {
+      flex: 1;
+      min-width: 200px;
+      padding: 15px;
+      border-radius: var(--border-radius);
+    }
+
+    .priority-tag {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 14px;
+    }
+
+    .priority-emergency {
+      background-color: #ffebee;
+      color: #d32f2f;
+    }
+
+    .priority-high {
+      background-color: #fff8e1;
+      color: #f57c00;
+    }
+
+    .priority-normal {
+      background-color: #e3f2fd;
+      color: #1976d2;
+    }
+
+    .priority-low {
+      background-color: #e8f5e9;
+      color: #388e3c;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Header Section -->
+  <header class="header">
+    <div class="container">
+      <nav class="navbar">
+        <a href="../../index.html" class="logo">MedSchedule</a>
+        <ul class="nav-links" id="nav-links">
+          <li><a href="../../index.html">Home</a></li>
+          <li><a href="../doctors.html">Doctors</a></li>
+          <li><a href="../appointments.html">Appointments</a></li>
+          <li id="admin-link"><a href="dashboard.html">Admin</a></li>
+          <li id="auth-links">
+            <a href="../login.html" id="login-link" style="display: none;">Login</a>
+            <a href="../register.html" id="register-link" style="display: none;">Register</a>
+            <a href="../account.html" id="account-link">My Account</a>
+            <a href="#" id="logout-link">Logout</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content Section -->
+  <section class="scheduler-section" style="padding: 40px 0;">
+    <div class="container">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h1>Auto-Scheduler</h1>
+        <a href="dashboard.html" class="btn">Back to Dashboard</a>
+      </div>
+
+      <div class="card mt-3">
+        <div class="card-header">
+          <h2 class="card-title">Priority-Based Scheduling</h2>
+        </div>
+        <div class="card-body">
+          <p>The system uses a greedy algorithm to schedule appointments based on patient priority levels. This ensures
+            that patients with more urgent needs receive prompt care.</p>
+
+          <div class="priority-info">
+            <div class="priority-card priority-emergency">
+              <h3>Emergency</h3>
+              <p>Life-threatening conditions requiring immediate attention</p>
+              <p><strong>Priority Score:</strong> 100</p>
+            </div>
+
+            <div class="priority-card priority-high">
+              <h3>High</h3>
+              <p>Serious conditions requiring urgent care</p>
+              <p><strong>Priority Score:</strong> 50</p>
+            </div>
+
+            <div class="priority-card priority-normal">
+              <h3>Normal</h3>
+              <p>Standard medical issues needing attention</p>
+              <p><strong>Priority Score:</strong> 25</p>
+            </div>
+
+            <div class="priority-card priority-low">
+              <h3>Low</h3>
+              <p>Non-urgent routine checkups or minor issues</p>
+              <p><strong>Priority Score:</strong> 10</p>
+            </div>
+          </div>
+
+          <div class="scheduler-container">
+            <h3>How the Scheduling Algorithm Works</h3>
+
+            <div class="scheduler-step">
+              <div class="scheduler-step-title">Step 1: Sort Patients by Priority</div>
+              <p>Patients are sorted first by priority level (emergency > high > normal > low), and then by registration
+                date (first-come, first-served within the same priority).</p>
+            </div>
+
+            <div class="scheduler-step">
+              <div class="scheduler-step-title">Step 2: Match with Available Doctors</div>
+              <p>For each patient, the system finds available doctors matching their needs, considering:</p>
+              <ul>
+                <li>Doctor specialization</li>
+                <li>Patient's preferred doctors (if specified)</li>
+                <li>Available time slots</li>
+              </ul>
+            </div>
+
+            <div class="scheduler-step">
+              <div class="scheduler-step-title">Step 3: Optimize Time Slots</div>
+              <p>The system assigns the earliest available time slot for each patient, ensuring efficient use of doctor
+                availability while maintaining priority order.</p>
+            </div>
+
+            <div class="scheduler-step">
+              <div class="scheduler-step-title">Step 4: Handle Conflicts</div>
+              <p>When conflicts arise (e.g., emergency cases requiring immediate attention), the system can reschedule
+                lower-priority appointments as needed.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Run Scheduler Section -->
+      <div class="card mt-3">
+        <div class="card-header">
+          <h2 class="card-title">Run Auto-Scheduler</h2>
+        </div>
+        <div class="card-body">
+          <p>Use the form below to run the priority-based auto-scheduler for unscheduled appointments.</p>
+
+          <form id="scheduler-form">
+            <div class="form-group">
+              <label for="scheduler-start-date" class="form-label">Date Range</label>
+              <div style="display: flex; gap: 10px;">
+                <input type="date" id="scheduler-start-date" class="form-input" required>
+                <span style="align-self: center;">to</span>
+                <input type="date" id="scheduler-end-date" class="form-input" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="scheduler-doctors" class="form-label">Doctors</label>
+              <select id="scheduler-doctors" class="form-select" multiple>
+                <option value="all" selected>All Available Doctors</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Include Patient Priorities</label>
+              <div style="display: flex; flex-wrap: wrap; gap: 15px;">
+                <label>
+                  <input type="checkbox" name="priority" value="emergency" checked> Emergency
+                </label>
+                <label>
+                  <input type="checkbox" name="priority" value="high" checked> High
+                </label>
+                <label>
+                  <input type="checkbox" name="priority" value="normal" checked> Normal
+                </label>
+                <label>
+                  <input type="checkbox" name="priority" value="low" checked> Low
+                </label>
+              </div>
+            </div>
+
+            <button type="submit" class="btn">Run Scheduler</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Results Section (initially hidden) -->
+      <div id="scheduler-results" style="display: none; margin-top: 30px;">
+        <h2>Scheduling Results</h2>
+        <div id="scheduler-visualization"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer Section -->
+  <footer style="background-color: #333; color: white; padding: 40px 0; margin-top: 60px;">
+    <div class="container">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px;">
+        <div>
+          <h3>MedSchedule</h3>
+          <p>Efficient healthcare scheduling for better patient care and provider management.</p>
+        </div>
+
+        <div>
+          <h3>Quick Links</h3>
+          <ul style="list-style: none; padding: 0;">
+            <li><a href="../../index.html" style="color: white; text-decoration: none;">Home</a></li>
+            <li><a href="../doctors.html" style="color: white; text-decoration: none;">Doctors</a></li>
+            <li><a href="../appointments.html" style="color: white; text-decoration: none;">Appointments</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3>Contact Us</h3>
+          <p>Email: support@medschedule.com</p>
+          <p>Phone: 1-800-MED-SCHED</p>
+          <p>Address: 123 Healthcare Ave, Medical District</p>
+        </div>
+      </div>
+
+      <div
+        style="margin-top: 40px; text-align: center; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+        <p>&copy; 2023 Healthcare Scheduling System. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Alert Container -->
+  <div id="alert-container" style="position: fixed; top: 20px; right: 20px; z-index: 1000;"></div>
+
+  <!-- Scripts -->
+  <script src="../../js/api.js"></script>
+  <script src="../../js/utils.js"></script>
+  <script src="../../js/scheduler.js"></script>
+  <script src="../../js/layout.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Check if user is admin
+      const userRole = utils.getUserRole();
+
+      /*  -  "override admin check"
+      if (userRole !== 'admin') {
+        // Redirect non-admin users
+        utils.showAlert('You do not have permission to access this page', 'error');
+        setTimeout(() => {
+          window.location.href = '../../index.html';
+        }, 2000);
+        return;
+      }
+      */
+
+      // Set default dates (next 7 days)
+      const today = new Date();
+      const nextWeek = new Date();
+      nextWeek.setDate(today.getDate() + 7);
+
+      document.getElementById('scheduler-start-date').value = utils.formatDate(today);
+      document.getElementById('scheduler-end-date').value = utils.formatDate(nextWeek);
+
+      // Load doctors for the dropdown
+      loadDoctors();
+
+      // Setup form submission
+      setupSchedulerForm();
+
+      // Setup logout button
+      document.getElementById('logout-link').addEventListener('click', (e) => {
+        e.preventDefault();
+        api.auth.logout();
+        utils.showAlert('You have been logged out successfully', 'success');
+        setTimeout(() => {
+          window.location.href = '../../index.html';
+        }, 1000);
+      });
+    });
+
+    // Load doctors data for the dropdown
+    async function loadDoctors() {
+      const doctorsSelect = document.getElementById('scheduler-doctors');
+
+      try {
+        // Get all available doctors
+        const response = await api.doctors.getAllDoctors('?isAvailable=true');
+
+        if (response.success && response.data.length > 0) {
+          // Keep the "All" option and remove the rest
+          while (doctorsSelect.options.length > 1) {
+            doctorsSelect.remove(1);
+          }
+
+          // Add available doctors
+          response.data.forEach(doctor => {
+            const option = document.createElement('option');
+            option.value = doctor._id;
+            option.textContent = `Dr. ${doctor.user.name} (${doctor.specialization})`;
+            doctorsSelect.appendChild(option);
+          });
+        } else {
+          utils.showAlert('No available doctors found. Please ensure doctors are marked as available.', 'warning');
+        }
+      } catch (error) {
+        utils.showAlert('Error loading doctors: ' + error, 'error');
+      }
+    }
+
+    // Set up the scheduler form
+    function setupSchedulerForm() {
+      const form = document.getElementById('scheduler-form');
+
+      // Form submission
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const startDate = document.getElementById('scheduler-start-date').value;
+        const endDate = document.getElementById('scheduler-end-date').value;
+        const doctorSelect = document.getElementById('scheduler-doctors');
+
+        // Get selected doctors
+        const selectedDoctors = Array.from(doctorSelect.selectedOptions).map(option => option.value);
+
+        // Check if "all" is selected
+        const isAllDoctors = selectedDoctors.includes('all');
+
+        // Get selected priorities
+        const selectedPriorities = Array.from(document.querySelectorAll('input[name="priority"]:checked')).map(checkbox => checkbox.value);
+
+        // Validate at least one priority is selected
+        if (selectedPriorities.length === 0) {
+          utils.showAlert('Please select at least one priority level', 'error');
+          return;
+        }
+
+        // Prepare data for auto-scheduler
+        const schedulingData = {
+          dateRange: {
+            startDate,
+            endDate
+          },
+          doctorIds: isAllDoctors ? [] : selectedDoctors,
+          priorities: selectedPriorities
+        };
+
+        try {
+          // Show loading state
+          const submitButton = form.querySelector('button[type="submit"]');
+          const originalButtonText = submitButton.textContent;
+          submitButton.textContent = 'Running...';
+          submitButton.disabled = true;
+
+          // Call API to auto-schedule
+          const response = await api.appointments.autoScheduleAppointments(schedulingData);
+
+          if (response.success) {
+            utils.showAlert('Auto-scheduling completed successfully!', 'success');
+
+            // Show results
+            document.getElementById('scheduler-results').style.display = 'block';
+
+            // Scroll to results
+            document.getElementById('scheduler-results').scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+
+            // Visualize results
+            visualizeSchedulingResults(response.data);
+          } else {
+            utils.showAlert(response.error || 'Failed to run auto-scheduler', 'error');
+          }
+        } catch (error) {
+          utils.showAlert('Error running auto-scheduler: ' + error, 'error');
+        } finally {
+          // Reset button state
+          submitButton.textContent = originalButtonText;
+          submitButton.disabled = false;
+        }
+      });
+    }
+
+    // Visualize scheduling results
+    function visualizeSchedulingResults(results) {
+      const container = document.getElementById('scheduler-visualization');
+
+      // Reset scheduler instance
+      window.scheduler.clear();
+
+      // Add patients
+      if (results.patients) {
+        results.patients.forEach(patient => {
+          window.scheduler.addPatient(patient);
+        });
+      }
+
+      // Set doctor availability
+      if (results.doctorAvailability) {
+        for (const doctorId in results.doctorAvailability) {
+          window.scheduler.setDoctorAvailability(doctorId, results.doctorAvailability[doctorId]);
+        }
+      }
+
+      // Copy scheduled appointments
+      if (results.scheduledAppointments) {
+        window.scheduler.scheduledAppointments = results.scheduledAppointments;
+      }
+
+      // Copy failed schedulings
+      if (results.failedSchedulings) {
+        window.scheduler.failedSchedulings = results.failedSchedulings;
+      }
+
+      // Visualize the results
+      window.scheduler.visualizeScheduling('scheduler-visualization');
+
+      // Add statistics summary
+      const statsDiv = document.createElement('div');
+      statsDiv.className = 'card mt-3';
+      statsDiv.innerHTML = `
+        <div class="card-header">
+          <h3 class="card-title">Scheduling Statistics</h3>
+        </div>
+        <div class="card-body">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+            <div class="stat-card">
+              <div class="stat-number">${results.scheduledAppointments?.length || 0}</div>
+              <div class="stat-label">Appointments Scheduled</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number">${results.failedSchedulings?.length || 0}</div>
+              <div class="stat-label">Failed Schedulings</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number">${results.patients?.length || 0}</div>
+              <div class="stat-label">Total Patients Processed</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number">${Object.keys(results.doctorAvailability || {}).length}</div>
+              <div class="stat-label">Doctors Involved</div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      container.appendChild(statsDiv);
+
+      // Add actions section
+      const actionsDiv = document.createElement('div');
+      actionsDiv.className = 'mt-3 text-center';
+      actionsDiv.innerHTML = `
+        <button class="btn" id="view-appointments-btn">View All Appointments</button>
+        <button class="btn btn-secondary" id="export-results-btn">Export Results</button>
+      `;
+
+      container.appendChild(actionsDiv);
+
+      // Add button event listeners
+      document.getElementById('view-appointments-btn').addEventListener('click', () => {
+        window.location.href = 'dashboard.html'; // Redirect to dashboard
+      });
+
+      document.getElementById('export-results-btn').addEventListener('click', () => {
+        // Simple export as JSON
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(results, null, 2));
+        const downloadAnchorNode = document.createElement('a');
+        downloadAnchorNode.setAttribute("href", dataStr);
+        downloadAnchorNode.setAttribute("download", "scheduler_results.json");
+        document.body.appendChild(downloadAnchorNode);
+        downloadAnchorNode.click();
+        downloadAnchorNode.remove();
+      });
+    }
+  </script>
+</body>
+
+</html>

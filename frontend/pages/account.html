@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Account Settings - Healthcare Scheduling System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <!-- Header Section -->
+  <header class="header">
+    <div class="container">
+      <nav class="navbar">
+        <a href="../index.html" class="logo">MedSchedule</a>
+        <ul class="nav-links" id="nav-links">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="doctors.html">Doctors</a></li>
+          <li><a href="appointments.html">Appointments</a></li>
+          <li id="admin-link" style="display: none;"><a href="admin/dashboard.html">Admin</a></li>
+          <li id="auth-links">
+            <a href="login.html" id="login-link">Login</a>
+            <a href="register.html" id="register-link">Register</a>
+            <a href="account.html" id="account-link" class="active" style="display: none;">My Account</a>
+            <a href="#" id="logout-link" style="display: none;">Logout</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content Section -->
+  <section class="account-section" style="padding: 40px 0;">
+    <div class="container">
+      <h1 class="text-center">Account Settings</h1>
+      
+      <!-- Login Prompt (shown if not logged in) -->
+      <div id="login-prompt" style="display: none;">
+        <div class="card">
+          <div class="card-body text-center">
+            <h2>Please Login</h2>
+            <p>You need to be logged in to view your account settings.</p>
+            <a href="login.html?redirect=account.html" class="btn">Login Now</a>
+            <p style="margin-top: 15px;">Don't have an account? <a href="register.html">Register</a></p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Account Content (shown if logged in) -->
+      <div id="account-content" style="display: none;">
+        <div class="tab-container">
+          <div class="tab-buttons">
+            <button class="tab-button active" data-tab="profile">Profile</button>
+            <button class="tab-button" data-tab="security">Security</button>
+            <button class="tab-button" id="tab-button-medical" style="display: none;">Medical Information</button>
+            <button class="tab-button" id="tab-button-professional" style="display: none;">Professional Details</button>
+          </div>
+          
+          <!-- Profile Tab -->
+          <div id="profile-tab" class="tab-content active">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Personal Information</h3>
+              </div>
+              <div class="card-body">
+                <form id="profile-form">
+                  <div style="display: flex; align-items: center; margin-bottom: 20px;">
+                    <div style="width: 100px; height: 100px; border-radius: 50%; overflow: hidden; margin-right: 20px; background-color: #f5f5f5; display: flex; justify-content: center; align-items: center;">
+                      <img id="profile-image" src="../img/default-user.png" alt="Profile" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div>
+                      <h3 id="user-name">Loading...</h3>
+                      <p id="user-role" style="color: var(--primary-color);">Loading...</p>
+                      <div class="form-group" style="margin-top: 10px;">
+                        <label for="profile-image-upload" class="btn btn-sm">Change Profile Photo</label>
+                        <input type="file" id="profile-image-upload" accept="image/*" style="display: none;">
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="name" class="form-label">Full Name</label>
+                    <input type="text" id="name" name="name" class="form-input" required>
+                    <div id="name-error" class="error-message" style="color: var(--error-color); display: none;"></div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" id="email" name="email" class="form-input" required>
+                    <div id="email-error" class="error-message" style="color: var(--error-color); display: none;"></div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="phone" class="form-label">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" class="form-input">
+                    <div id="phone-error" class="error-message" style="color: var(--error-color); display: none;"></div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="address" class="form-label">Address</label>
+                    <textarea id="address" name="address" class="form-input" rows="2"></textarea>
+                  </div>
+                  
+                  <button type="submit" class="btn">Save Changes</button>
+                </form>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Security Tab -->
+          <div id="security-tab" class="tab-content">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Change Password</h3>
+              </div>
+              <div class="card-body">
+                <form id="password-form">
+                  <div class="form-group">
+                    <label for="current-password" class="form-label">Current Password</label>
+                    <input type="password" id="current-password" name="currentPassword" class="form-input" required>
+                    <div id="current-password-error" class="error-message" style="color: var(--error-color); display: none;"></div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="new-password" class="form-label">New Password</label>
+                    <input type="password" id="new-password" name="newPassword" class="form-input" required>
+                    <div id="new-password-error" class="error-message" style="color: var(--error-color); display: none;"></div>
+                    <small style="color: #666;">Password must be at least 8 characters with letters and numbers.</small>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="confirm-password" class="form-label">Confirm New Password</label>
+                    <input type="password" id="confirm-password" name="confirmPassword" class="form-input" required>
+                    <div id="confirm-password-error" class="error-message" style="color: var(--error-color); display: none;"></div>
+                  </div>
+                  
+                  <button type="submit" class="btn">Update Password</button>
+                </form>
+              </div>
+            </div>
+            
+            <div class="card mt-3">
+              <div class="card-header">
+                <h3 class="card-title">Account Management</h3>
+              </div>
+              <div class="card-body">
+                <p>Need to deactivate your account or update privacy settings?</p>
+                <button id="deactivate-account-btn" class="btn btn-secondary">Deactivate Account</button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Medical Information Tab (for patients) -->
+          <div id="medical-tab" class="tab-content">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Medical Information</h3>
+              </div>
+              <div class="card-body">
+                <form id="medical-form">
+                  <div class="form-group">
+                    <label for="date-of-birth" class="form-label">Date of Birth</label>
+                    <input type="date" id="date-of-birth" name="dateOfBirth" class="form-input">
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="gender" class="form-label">Gender</label>
+                    <select id="gender" name="gender" class="form-select">
+                      <option value="">Select Gender</option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                      <option value="Other">Other</option>
+                      <option value="Prefer not to say">Prefer not to say</option>
+                    </select>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="blood-type" class="form-label">Blood Type</label>
+                    <select id="blood-type" name="bloodType" class="form-select">
+                      <option value="">Select Blood Type</option>
+                      <option value="A+">A+</option>
+                      <option value="A-">A-</option>
+                      <option value="B+">B+</option>
+                      <option value="B-">B-</option>
+                      <option value="AB+">AB+</option>
+                      <option value="AB-">AB-</option>
+                      <option value="O+">O+</option>
+                      <option value="O-">O-</option>
+                      <option value="Unknown">Unknown</option>
+                    </select>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="allergies" class="form-label">Allergies</label>
+                    <textarea id="allergies" name="allergies" class="form-input" rows="2" placeholder="List any allergies you have..."></textarea>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="medical-conditions" class="form-label">Medical Conditions</label>
+                    <textarea id="medical-conditions" name="medicalConditions" class="form-input" rows="2" placeholder="List any chronic conditions..."></textarea>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="medications" class="form-label">Current Medications</label>
+                    <textarea id="medications" name="medications" class="form-input" rows="2" placeholder="List current medications..."></textarea>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="emergency-contact" class="form-label">Emergency Contact</label>
+                    <input type="text" id="emergency-contact-name" name="emergencyContactName" class="form-input" placeholder="Name" style="margin-bottom: 10px;">
+                    <input type="tel" id="emergency-contact-phone" name="emergencyContactPhone" class="form-input" placeholder="Phone Number">
+                  </div>
+                  
+                  <button type="submit" class="btn">Save Medical Information</button>
+                </form>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Professional Details Tab (for doctors) -->
+          <div id="professional-tab" class="tab-content">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Professional Information</h3>
+              </div>
+              <div class="card-body">
+                <form id="professional-form">
+                  <div class="form-group">
+                    <label for="specialization" class="form-label">Specialization</label>
+                    <select id="specialization" name="specialization" class="form-select">
+                      <option value="">Select Specialization</option>
+                      <option value="Cardiology">Cardiology</option>
+                      <option value="Dermatology">Dermatology</option>
+                      <option value="Endocrinology">Endocrinology</option>
+                      <option value="Gastroenterology">Gastroenterology</option>
+                      <option value="Neurology">Neurology</option>
+                      <option value="Obstetrics">Obstetrics</option>
+                      <option value="Oncology">Oncology</option>
+                      <option value="Ophthalmology">Ophthalmology</option>
+                      <option value="Orthopedics">Orthopedics</option>
+                      <option value="Pediatrics">Pediatrics</option>
+                      <option value="Psychiatry">Psychiatry</option>
+                      <option value="Urology">Urology</option>
+                    </select>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="license-number" class="form-label">License Number</label>
+                    <input type="text" id="license-number" name="licenseNumber" class="form-input">
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="experience" class="form-label">Years of Experience</label>
+                    <input type="number" id="experience" name="experience" class="form-input" min="0" max="70">
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="education" class="form-label">Education</label>
+                    <textarea id="education" name="education" class="form-input" rows="2" placeholder="e.g., MD from Harvard Medical School, 2010"></textarea>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="bio" class="form-label">Professional Bio</label>
+                    <textarea id="bio" name="bio" class="form-input" rows="4" placeholder="Brief description of your professional experience and expertise..."></textarea>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="languages" class="form-label">Languages Spoken</label>
+                    <input type="text" id="languages" name="languages" class="form-input" placeholder="e.g., English, Spanish, French">
+                  </div>
+                  
+                  <div class="form-group">
+                    <label class="form-label">Availability Status</label>
+                    <div style="display: flex; align-items: center;">
+                      <label style="margin-right: 20px;">
+                        <input type="radio" name="isAvailable" value="true" checked> Available for Appointments
+                      </label>
+                      <label>
+                        <input type="radio" name="isAvailable" value="false"> Not Available
+                      </label>
+                    </div>
+                  </div>
+                  
+                  <button type="submit" class="btn">Save Professional Information</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer Section -->
+  <footer style="background-color: #333; color: white; padding: 40px 0; margin-top: 60px;">
+    <div class="container">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px;">
+        <div>
+          <h3>MedSchedule</h3>
+          <p>Efficient healthcare scheduling for better patient care and provider management.</p>
+        </div>
+        
+        <div>
+          <h3>Quick Links</h3>
+          <ul style="list-style: none; padding: 0;">
+            <li><a href="../index.html" style="color: white; text-decoration: none;">Home</a></li>
+            <li><a href="doctors.html" style="color: white; text-decoration: none;">Doctors</a></li>
+            <li><a href="appointments.html" style="color: white; text-decoration: none;">Appointments</a></li>
+            <li><a href="login.html" style="color: white; text-decoration: none;">Login</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3>Contact Us</h3>
+          <p>Email: support@medschedule.com</p>
+          <p>Phone: 1-800-MED-SCHED</p>
+          <p>Address: 123 Healthcare Ave, Medical District</p>
+        </div>
+      </div>
+      
+      <div style="margin-top: 40px; text-align: center; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+        <p>&copy; 2023 Healthcare Scheduling System. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Alert Container -->
+  <div id="alert-container" style="position: fixed; top: 20px; right: 20px; z-index: 1000;"></div>
+
+  <!-- Scripts -->
+  <script src="../js/api.js"></script>
+  <script src="../js/utils.js"></script>
+  <script src="../js/layout.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Check if user is logged in
+      if (!utils.isAuthenticated()) {
+        document.getElementById('login-prompt').style.display = 'block';
+        return;
+      }
+      
+      // Show account content
+      document.getElementById('account-content').style.display = 'block';
+      
+      // Setup tabs
+      setupTabs();
+      
+      // Load user data
+      loadUserData();
+      
+      // Setup image upload handler
+      setupImageUpload();
+      
+      // Setup deactivate account button
+      document.getElementById('deactivate-account-btn').addEventListener('click', deactivateAccount);
+    });
+    
+    // Handle profile image upload
+    function setupImageUpload() {
+      const imageUploadInput = document.getElementById('profile-image-upload');
+      const profileImage = document.getElementById('profile-image');
+      
+      imageUploadInput.addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        
+        // Validate file size (max 5MB)
+        if (file.size > 5 * 1024 * 1024) {
+          utils.showAlert('Image is too large. Maximum size is 5MB.', 'error');
+          return;
+        }
+        
+        // Validate file type
+        if (!file.type.match('image.*')) {
+          utils.showAlert('Please select an image file.', 'error');
+          return;
+        }
+        
+        // Read and convert to base64
+        const reader = new FileReader();
+        reader.onload = async function(e) {
+          const base64Image = e.target.result;
+          
+          // Display the image preview
+          profileImage.src = base64Image;
+          
+          try {
+            // Save to user profile
+            const response = await fetchAPI('/auth/profile', {
+              method: 'PUT',
+              body: JSON.stringify({
+                base64_img: base64Image
+              })
+            });
+            
+            if (response.success) {
+              utils.showAlert('Profile image updated successfully!', 'success');
+            } else {
+              utils.showAlert(response.error || 'Failed to update profile image.', 'error');
+              // Revert to previous image if update failed
+              loadUserData();
+            }
+          } catch (error) {
+            utils.showAlert('Error updating profile image: ' + error, 'error');
+            // Revert to previous image on error
+            loadUserData();
+          }
+        };
+        
+        reader.onerror = function() {
+          utils.showAlert('Error reading file.', 'error');
+        };
+        
+        // Read the file as Data URL (base64)
+        reader.readAsDataURL(file);
+      });
+    }
+    
+    // Set up tabs functionality
+    function setupTabs() {
+      const tabButtons = document.querySelectorAll('.tab-button');
+      
+      tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const tabId = button.getAttribute('data-tab');
+          activateTab(tabId);
+        });
+      });
+    }
+    
+    // Activate a tab
+    function activateTab(tabId) {
+      // Update button active state
+      document.querySelectorAll('.tab-button').forEach(btn => {
+        if (btn.getAttribute('data-tab') === tabId) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+      
+      // Show active tab content
+      document.querySelectorAll('.tab-content').forEach(content => {
+        if (content.id === `${tabId}-tab`) {
+          content.classList.add('active');
+        } else {
+          content.classList.remove('active');
+        }
+      });
+    }
+    
+    // Update navigation based on auth status
+    function updateNavigation() {
+      const isAuthenticated = utils.isAuthenticated();
+      const userRole = utils.getUserRole();
+      
+      // Auth links
+      document.getElementById('login-link').style.display = isAuthenticated ? 'none' : 'inline-block';
+      document.getElementById('register-link').style.display = isAuthenticated ? 'none' : 'inline-block';
+      document.getElementById('account-link').style.display = isAuthenticated ? 'inline-block' : 'none';
+      document.getElementById('logout-link').style.display = isAuthenticated ? 'inline-block' : 'none';
+      
+      // Admin link
+      document.getElementById('admin-link').style.display = (userRole === 'admin') ? 'inline-block' : 'none';
+      
+      // Logout functionality
+      document.getElementById('logout-link').addEventListener('click', (e) => {
+        e.preventDefault();
+        api.auth.logout();
+        utils.showAlert('You have been logged out successfully.', 'success');
+        setTimeout(() => {
+          window.location.href = '../index.html';
+        }, 1000);
+      });
+    }
+    
+    // Load user data
+    async function loadUserData() {
+      try {
+        // Get current user data
+        const response = await api.auth.getCurrentUser();
+        
+        if (response.success) {
+          const userData = response.data;
+          
+          // Store user role
+          window.userRole = userData.role;
+          
+          // Update display name and role
+          document.getElementById('user-name').textContent = userData.name || 'User';
+          document.getElementById('user-role').textContent = utils.capitalize(userData.role);
+          
+          // Set form values
+          document.getElementById('name').value = userData.name || '';
+          document.getElementById('email').value = userData.email || '';
+          document.getElementById('phone').value = userData.phone || '';
+          document.getElementById('address').value = userData.address || '';
+          
+          // Set profile image if available
+          if (userData.base64_img) {
+            document.getElementById('profile-image').src = userData.base64_img;
+          }
+          
+          // Show role-specific tabs
+          if (userData.role === 'patient') {
+            document.getElementById('tab-button-medical').style.display = 'block';
+            document.getElementById('tab-button-medical').setAttribute('data-tab', 'medical');
+            loadPatientData();
+          } else if (userData.role === 'doctor') {
+            document.getElementById('tab-button-professional').style.display = 'block';
+            document.getElementById('tab-button-professional').setAttribute('data-tab', 'professional');
+            loadDoctorData();
+          }
+        } else {
+          utils.showAlert(response.error || 'Failed to load user data. Please try again.', 'error');
+        }
+      } catch (error) {
+        utils.showAlert('Error loading user data: ' + error, 'error');
+      }
+    }
+    
+    // Load patient-specific data
+    async function loadPatientData() {
+      try {
+        const response = await api.patients.getPatientById('me');
+        
+        if (response.success && response.data) {
+          const patientInfo = response.data;
+          
+          // Medical info
+          document.getElementById('date-of-birth').value = utils.formatDate(patientInfo.dateOfBirth) || '';
+          document.getElementById('gender').value = patientInfo.gender || '';
+          document.getElementById('blood-type').value = patientInfo.bloodType || '';
+          document.getElementById('allergies').value = Array.isArray(patientInfo.allergies) ? patientInfo.allergies.join(', ') : patientInfo.allergies || '';
+          document.getElementById('medical-conditions').value = patientInfo.medicalConditions || '';
+          document.getElementById('medications').value = patientInfo.medications || '';
+          
+          // Emergency contact
+          if (patientInfo.emergencyContact) {
+            document.getElementById('emergency-contact-name').value = patientInfo.emergencyContact.name || '';
+            document.getElementById('emergency-contact-phone').value = patientInfo.emergencyContact.phone || '';
+          }
+        }
+      } catch (error) {
+        console.error('Error loading patient data:', error);
+      }
+    }
+    
+    // Load doctor-specific data
+    async function loadDoctorData() {
+      try {
+        const response = await api.doctors.getDoctorById('me');
+        
+        if (response.success && response.data) {
+          const doctorInfo = response.data;
+          
+          // Professional info
+          document.getElementById('specialization').value = doctorInfo.specialization || '';
+          document.getElementById('license-number').value = doctorInfo.licenseNumber || '';
+          document.getElementById('experience').value = doctorInfo.experience || '';
+          document.getElementById('education').value = doctorInfo.education || '';
+          document.getElementById('bio').value = doctorInfo.bio || '';
+          document.getElementById('languages').value = Array.isArray(doctorInfo.languages) ? doctorInfo.languages.join(', ') : '';
+          
+          // Availability
+          const availableRadios = document.getElementsByName('isAvailable');
+          for (const radio of availableRadios) {
+            if (radio.value === String(doctorInfo.isAvailable)) {
+              radio.checked = true;
+              break;
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error loading doctor data:', error);
+      }
+    }
+    
+    // Setup form submissions
+    function setupFormSubmissions(userRole) {
+      // Profile form
+      const profileForm = document.getElementById('profile-form');
+      profileForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        // Clear previous errors
+        utils.clearValidationErrors('profile-form');
+        
+        // Get form data
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const phone = document.getElementById('phone').value;
+        const address = document.getElementById('address').value;
+        const base64_img = document.getElementById('profile-image').src;
+        
+        // Basic validation
+        const validations = {
+          name: {
+            label: 'Name',
+            required: true
+          },
+          email: {
+            label: 'Email',
+            required: true,
+            email: true
+          }
+        };
+        
+        const validationResult = utils.validateForm('profile-form', validations);
+        if (validationResult !== true) {
+          return;
+        }
+        
+        // Show loading state
+        const submitButton = profileForm.querySelector('button[type="submit"]');
+        const originalButtonText = submitButton.textContent;
+        submitButton.textContent = 'Saving...';
+        submitButton.disabled = true;
+        
+        try {
+          // Call API to update profile
+          const response = await fetchAPI('/auth/profile', {
+            method: 'PUT',
+            body: JSON.stringify({
+              name,
+              email,
+              phone,
+              address,
+              base64_img
+            })
+          });
+          
+          if (response.success) {
+            utils.showAlert('Profile updated successfully!', 'success');
+            
+            // Refresh user data in header (if applicable)
+            if (typeof updateUserInfo === 'function') {
+              updateUserInfo();
+            }
+          } else {
+            utils.showAlert(response.error || 'Failed to update profile. Please try again.', 'error');
+          }
+        } catch (error) {
+          utils.showAlert('Error updating profile: ' + error, 'error');
+        } finally {
+          // Reset button state
+          submitButton.textContent = originalButtonText;
+          submitButton.disabled = false;
+        }
+      });
+      
+      // Password form
+      const passwordForm = document.getElementById('password-form');
+      passwordForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        // Clear previous errors
+        utils.clearValidationErrors('password-form');
+        
+        // Get form data
+        const currentPassword = document.getElementById('current-password').value;
+        const newPassword = document.getElementById('new-password').value;
+        const confirmPassword = document.getElementById('confirm-password').value;
+        
+        // Basic validation
+        const validations = {
+          currentPassword: {
+            label: 'Current Password',
+            required: true
+          },
+          newPassword: {
+            label: 'New Password',
+            required: true,
+            password: true
+          },
+          confirmPassword: {
+            label: 'Confirm Password',
+            required: true,
+            validator: (value) => {
+              return value === newPassword || 'Passwords do not match';
+            }
+          }
+        };
+        
+        const validationResult = utils.validateForm('password-form', validations);
+        if (validationResult !== true) {
+          return;
+        }
+        
+        // Show loading state
+        const submitButton = passwordForm.querySelector('button[type="submit"]');
+        const originalButtonText = submitButton.textContent;
+        submitButton.textContent = 'Updating...';
+        submitButton.disabled = true;
+        
+        try {
+          // Call API to change password
+          const response = await fetchAPI('/auth/change-password', {
+            method: 'POST',
+            body: JSON.stringify({
+              currentPassword,
+              newPassword
+            })
+          });
+          
+          if (response.success) {
+            utils.showAlert('Password updated successfully!', 'success');
+            passwordForm.reset();
+          } else {
+            utils.showAlert(response.error || 'Failed to update password. Please try again.', 'error');
+          }
+        } catch (error) {
+          utils.showAlert('Error updating password: ' + error, 'error');
+        } finally {
+          // Reset button state
+          submitButton.textContent = originalButtonText;
+          submitButton.disabled = false;
+        }
+      });
+      
+      // Medical form (for patients)
+      if (userRole === 'patient') {
+        const medicalForm = document.getElementById('medical-form');
+        medicalForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          
+          // Show loading state
+          const submitButton = medicalForm.querySelector('button[type="submit"]');
+          const originalButtonText = submitButton.textContent;
+          submitButton.textContent = 'Saving...';
+          submitButton.disabled = true;
+          
+          try {
+            // Prepare medical data
+            const medicalData = {
+              patientInfo: {
+                dateOfBirth: document.getElementById('date-of-birth').value,
+                gender: document.getElementById('gender').value,
+                bloodType: document.getElementById('blood-type').value,
+                allergies: document.getElementById('allergies').value,
+                medicalConditions: document.getElementById('medical-conditions').value,
+                medications: document.getElementById('medications').value,
+                emergencyContact: {
+                  name: document.getElementById('emergency-contact-name').value,
+                  phone: document.getElementById('emergency-contact-phone').value
+                }
+              }
+            };
+            
+            // Call API to update patient
+            const response = await api.patients.updatePatient('me', medicalData);
+            
+            if (response.success) {
+              utils.showAlert('Medical information updated successfully!', 'success');
+            } else {
+              utils.showAlert(response.error || 'Failed to update medical information. Please try again.', 'error');
+            }
+          } catch (error) {
+            utils.showAlert('Error updating medical information: ' + error, 'error');
+          } finally {
+            // Reset button state
+            submitButton.textContent = originalButtonText;
+            submitButton.disabled = false;
+          }
+        });
+      }
+      
+      // Professional form (for doctors)
+      if (userRole === 'doctor') {
+        const professionalForm = document.getElementById('professional-form');
+        professionalForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          
+          // Show loading state
+          const submitButton = professionalForm.querySelector('button[type="submit"]');
+          const originalButtonText = submitButton.textContent;
+          submitButton.textContent = 'Saving...';
+          submitButton.disabled = true;
+          
+          try {
+            // Parse languages as array
+            const languagesStr = document.getElementById('languages').value;
+            const languages = languagesStr ? languagesStr.split(',').map(lang => lang.trim()) : [];
+            
+            // Get availability status
+            const isAvailable = document.querySelector('input[name="isAvailable"]:checked').value === 'true';
+            
+            // Prepare professional data
+            const professionalData = {
+              doctorInfo: {
+                specialization: document.getElementById('specialization').value,
+                licenseNumber: document.getElementById('license-number').value,
+                experience: parseInt(document.getElementById('experience').value) || 0,
+                education: document.getElementById('education').value,
+                bio: document.getElementById('bio').value,
+                languages,
+                isAvailable
+              }
+            };
+            
+            // Call API to update doctor
+            const response = await api.doctors.updateDoctor('me', professionalData);
+            
+            if (response.success) {
+              utils.showAlert('Professional information updated successfully!', 'success');
+            } else {
+              utils.showAlert(response.error || 'Failed to update professional information. Please try again.', 'error');
+            }
+          } catch (error) {
+            utils.showAlert('Error updating professional information: ' + error, 'error');
+          } finally {
+            // Reset button state
+            submitButton.textContent = originalButtonText;
+            submitButton.disabled = false;
+          }
+        });
+      }
+    }
+    
+    // Deactivate account
+    function deactivateAccount() {
+      if (confirm('Are you sure you want to deactivate your account? This action cannot be undone.')) {
+        const reason = prompt('Please tell us why you are leaving (optional):');
+        
+        // Call API to deactivate account
+        fetchAPI('/users/deactivate', {
+          method: 'POST',
+          body: JSON.stringify({ reason })
+        })
+          .then(response => {
+            if (response.success) {
+              utils.showAlert('Your account has been deactivated. Logging out...', 'success');
+              setTimeout(() => {
+                api.auth.logout();
+                window.location.href = '../index.html';
+              }, 2000);
+            } else {
+              utils.showAlert(response.error || 'Failed to deactivate account. Please try again.', 'error');
+            }
+          })
+          .catch(error => {
+            utils.showAlert('Error deactivating account: ' + error, 'error');
+          });
+      }
+    }
+  </script>
+</body>
+</html> 
